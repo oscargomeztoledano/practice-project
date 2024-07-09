@@ -13,12 +13,15 @@ Todo lo mencionado irá en sus respectivos contenedores teniendo en este apartad
 Para el producer y el consumer será estrictamente necesario bajar las imagenes de mi [repo público](https://hub.docker.com/repository/docker/oscargomeztoledano/oscargomezpracticas/general), las imagenes de kafka, zookeeper y mongo ya estan especificadas en el docker-compose.
 ------
 
+
 ## 2. APPWEB con nodejs, expressjs y reactjs.
 
 En esta parte vamos a desarrollar una APPWEB, que contará con un backend que obtendrá información de la base de datos de mongo en función de las peticiones que reciba del frontend. 
 
 En principio esta parte contará con dos contenedores (backend y frontend).
+
 ------
+
 
 ## 3. Como ejecutar el proyecto.
 
