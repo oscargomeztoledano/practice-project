@@ -28,7 +28,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - mongodata:/data/db
+      - mongo-data:/data/db
       #mysql-> /var/lib/mysql
       #postgres-> /var/lib/postgressql/data
 
@@ -43,5 +43,5 @@ services:
       - kafka
       - mongodb
 
-  volumes:
-    mongodata:
+volumes:
+  mongo-data:
