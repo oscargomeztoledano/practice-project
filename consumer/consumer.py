@@ -12,9 +12,9 @@ database_name= 'euro2024'
 kafka_topics=['players', 'teams', 'matches', 'groups']
 consumer = KafkaConsumer(
     *kafka_topics,
-    bootstrap_servers='kafka:9092',
     out_offset_reset='earliest',
-    group_id='consumer-group-a',
+    bootstrap_servers=['kafka:9092'],
+    group_id='group-consumer',
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
 
@@ -24,3 +24,12 @@ db= mongo_client[database_name]
 
 
 #funcion para insertar/actualizar (si ya existen) los datos en la db por coleccion/topic 
+
+def process(message):
+    data=message.value
+    collection= db[message.topic]
+    collection.update_one({'_id': data['_id']}, {'$set': data}, upsert=True)
+
+
+for message in consumer:
+    process(message)

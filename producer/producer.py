@@ -5,10 +5,10 @@ import json
 
 #definimos cada URL de la API con cada topic de Kafka y los headers para acceder a la API
 URLS_TOPICS = {
-    "https://euro-20242.p.rapidapi.com/players": "players_topic",
-    "https://euro-20242.p.rapidapi.com/teams": "teams_topic",
-    "https://euro-20242.p.rapidapi.com/matches": "matches_topic",
-    "https://euro-20242.p.rapidapi.com/groups": "players_topic",
+    "https://euro-20242.p.rapidapi.com/players": "players",
+    "https://euro-20242.p.rapidapi.com/teams": "teams",
+    "https://euro-20242.p.rapidapi.com/matches": "matches",
+    "https://euro-20242.p.rapidapi.com/groups": "groups",
 }
 
 headers = {
