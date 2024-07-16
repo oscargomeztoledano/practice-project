@@ -1,11 +1,7 @@
-FROM python:3
-
+FROM python:3-slim
 RUN mkdir -p /home/app
-
 WORKDIR /home/app
-
-COPY . .
-
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-
-CMD ["python3", "./producer.py"]
+COPY . .
+CMD ["python", "./producer.py"]
