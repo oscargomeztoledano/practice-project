@@ -30,21 +30,14 @@ while True:
         print("NoBrokersAvailable: Waiting for Kafka...")
         time.sleep(5)
 
-# Conexión con MongoDB
-while True:
-    try:
-        mongo_client = MongoClient(f'mongodb://{username}:{password}@mongo:27017/{database_name}?authSource=admin')
-        db = mongo_client[database_name]
-        break
-    except Exception as e:
-        print(f"Error connecting to MongoDB: {e}")
-        time.sleep(5)
-
 # Función para insertar/actualizar (si ya existen) los datos en la db por colección/topic
 def process(message):
     for data in message.value:
         collection = db[message.topic]
         collection.update_one({'_id': data['_id']}, {'$set': data}, upsert=True)
+
+mongo_client = MongoClient(f'mongodb://{username}:{password}@mongodb:27017/{database_name}?authSource=admin')
+db = mongo_client[database_name]
 
 for message in consumer:
     process(message)
