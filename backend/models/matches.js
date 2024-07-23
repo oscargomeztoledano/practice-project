@@ -3,9 +3,28 @@ var Schema = mongoose.Schema;
 
 var teamSchema = new Schema({
     score: Number,
-    lineUp: [{formation:String, players:[{player:String, status:String}]}],
-    team:[{name:String, players:[{type: Schema.Types.ObjectID, ref:'players'}], coach:String, captain:String, championships:Number, runnersUP:Number, group:String, imageUrl:String}]
+    lineup: lineupSchema,
+    team: teamDetailsSchema
 });
+var lineupSchema = new Schema({
+    formation: String,
+    players: [lineupPlayerSchema]
+});
+var lineupPlayerSchema = new Schema({
+    player: String,
+    status: String
+});
+var teamDetailsSchema = new Schema({
+    _id: {type: Schema.Types.ObjectId, ref: 'teams'},
+    name: String,
+    players:[{type: Schema.Types.ObjectId, ref: 'players'}],
+    coach: String,
+    captain: String,
+    championships: Number,
+    runnersUP: Number,
+    group: {type: Schema.Types.ObjectId, ref: 'groups'},
+    imageUrl: String
+});   
 
 var eventSchema = new Schema({
     minute: Number,
@@ -33,9 +52,10 @@ event.discriminator('substitution',substitutionSchema);
 event.discriminator('cart',cartSchema);
 
 var matchSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     number: Number,
     stage: String,
-    date: String,
+    date: Date,
     minutesCompleted: Number,
     description: String,
     teamA: teamSchema, 
