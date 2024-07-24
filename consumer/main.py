@@ -30,11 +30,11 @@ while True:
         print("NoBrokersAvailable: Waiting for Kafka...")
         time.sleep(5)
 
-# Función para insertar/actualizar (si ya existen) los datos en la db por colección/topic
 def process(message):
     for data in message.value:
-        collection = db[message.topic]
-        collection.update_one({'_id': data['_id']}, {'$set': data}, upsert=True)
+        if isinstance(data, dict) and '_id' in data:
+            collection = db[message.topic]
+            collection.update_one({'_id': data['_id']}, {'$set': data}, upsert=True)
 
 mongo_client = MongoClient(f'mongodb://{username}:{password}@mongodb:27017/{database_name}?authSource=admin')
 db = mongo_client[database_name]

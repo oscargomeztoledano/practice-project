@@ -17,13 +17,11 @@ services:
       - "9093:9093"
     depends_on:
       - zookeeper
-
   zookeeper:
     image: wurstmeister/zookeeper
     restart: always
     ports:
       - "2181:2181"
-
   kafdrop:
       image: obsidiandynamics/kafdrop
       restart: "no"
@@ -34,7 +32,6 @@ services:
         JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
       depends_on:
         - "kafka"
-
   mongodb:
     image: mongo
     ports:
@@ -46,19 +43,18 @@ services:
       - mongo-data:/data/db
       #mysql-> /var/lib/mysql
       #postgres-> /var/lib/postgressql/data
-
-  producer:
-    build: ./producer
-    depends_on:
-      - kafka
-
   consumer:
     build: ./consumer
     depends_on:
       - producer
       - kafka
       - mongodb
-  
+  producer:
+    build: 
+      context: ./producer
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - kafka
   backend:
     build: ./backend
     depends_on:

@@ -1,18 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
-var groupTeamSchema = new Schema({
-    team: teamsSchema,
-    points: Number,
-    matchesPlayed: Number,
-    wins: Number,
-    draws: Number,
-    losses: Number,
-    goalsScored: Number,
-    goalsConceded: Number,
-    goalDifference: Number
-});
 var teamsSchema = new Schema({
     _id:{type: Schema.Types.ObjectId, ref: 'teams'},
     name: String,
@@ -24,7 +12,54 @@ var teamsSchema = new Schema({
     group: Schema.Types.ObjectId,
     imageUrl: String
 });
+var groupTeamSchema = new Schema({
+    team: teamsSchema,
+    points: Number,
+    matchesPlayed: Number,
+    wins: Number,
+    draws: Number,
+    losses: Number,
+    goalsScored: Number,
+    goalsConceded: Number,
+    goalDifference: Number
+});
+var lineupPlayerSchema = new Schema({
+    player: String,
+    status: String
+});
+var lineupSchema = new Schema({
+    formation: String,
+    players: [lineupPlayerSchema]
+});
+var teamSchema = new Schema({
+    score: Number,
+    lineup: lineupSchema,
+    team: {type: Schema.Types.ObjectId, ref: 'teams'}
+});
+var eventSchema = new Schema({
+    minute: Number,
+    type: String,
+    team: String,
+},{discriminatorKey: 'type',_id:false});
+const event=mongoose.model('eventGroup',eventSchema);
 
+const goalSchema = new Schema({
+    scoringPlayer: String,
+    assistPlayer: String,
+    subtype: String,
+});
+const substitutionSchema = new Schema({
+    joiningPlayer: String,
+    leavingPlayer: String,
+});
+const cartSchema = new Schema({
+    cardColor: String,
+    bookedPlayer: String,
+});
+
+event.discriminator('goalG',goalSchema);
+event.discriminator('substitutionG',substitutionSchema);
+event.discriminator('cartG',cartSchema);
 var groupMatchSchema = new Schema({
     _id: {type: Schema.Types.ObjectId, ref: 'matches'},
     number: Number,
@@ -39,19 +74,6 @@ var groupMatchSchema = new Schema({
     city: String,
     events: [eventSchema],
     isFinished: Boolean
-});
-var teamSchema = new Schema({
-    score: Number,
-    lineup: lineupSchema,
-    team: {type: Schema.Types.ObjectId, ref: 'teams'}
-});
-var lineupSchema = new Schema({
-    formation: String,
-    players: [lineupPlayerSchema]
-});
-var lineupPlayerSchema = new Schema({
-    player: String,
-    status: String
 });
 var groupSchema = new Schema({
     _id: Schema.Types.ObjectId,

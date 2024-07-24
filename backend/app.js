@@ -4,8 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var playersRouter = require('./routes/players.js');
 var teamsRouter = require('./routes/teams.js');
 var matchesRouter = require('./routes/matches.js');
@@ -46,11 +44,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-//lo dejo por si hago pruebas **BORRAR**
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-//
 
 // Dependiendo de lo que llegue se manda a una ruta u a otra
 app.use('/players', playersRouter);

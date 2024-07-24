@@ -17,15 +17,8 @@ var playerSchema = new Schema({
     redcards: Number,
     yellowcards: Number
 });
-
-var groupSchema = new Schema({
-    _id: {type: Schema.Types.ObjectId, ref: 'groups'},
-    name: String,
-    teams: [groupTeamSchema],
-    matches: [{type: Schema.Types.ObjectId, ref: 'matches'}]
-});
 var groupTeamSchema = new Schema({
-    team: {type: Schema.Types.ObjectId, ref: 'teams'},
+    team: Schema.Types.ObjectId,
     points: Number,
     matchesPlayed: Number,
     wins: Number,
@@ -35,6 +28,13 @@ var groupTeamSchema = new Schema({
     goalsConceded: Number,
     goalDifference: Number
 });
+var groupSchema = new Schema({
+    _id: {type: Schema.Types.ObjectId, ref: 'groups'},
+    name: String,
+    teams: [groupTeamSchema],
+    matches: [{type: Schema.Types.ObjectId, ref: 'matches'}]
+});
+
 
 var teamSchema = new Schema({
     _id: Schema.Types.ObjectId,
@@ -48,4 +48,4 @@ var teamSchema = new Schema({
     imageUrl: String
 });
 
-module.redcards = mongoose.model('teams', teamSchema, 'teams');
+module.exports = mongoose.model('teams', teamSchema, 'teams');

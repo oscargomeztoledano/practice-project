@@ -1,18 +1,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var teamSchema = new Schema({
-    score: Number,
-    lineup: lineupSchema,
-    team: teamDetailsSchema
+var lineupPlayerSchema = new Schema({
+    player: String,
+    status: String
 });
 var lineupSchema = new Schema({
     formation: String,
     players: [lineupPlayerSchema]
-});
-var lineupPlayerSchema = new Schema({
-    player: String,
-    status: String
 });
 var teamDetailsSchema = new Schema({
     _id: {type: Schema.Types.ObjectId, ref: 'teams'},
@@ -24,14 +19,20 @@ var teamDetailsSchema = new Schema({
     runnersUP: Number,
     group: {type: Schema.Types.ObjectId, ref: 'groups'},
     imageUrl: String
-});   
+}); 
+var teamSchema = new Schema({
+    score: Number,
+    lineup: lineupSchema,
+    team: teamDetailsSchema
+});
+  
 
 var eventSchema = new Schema({
     minute: Number,
     type: String,
     team: String,
 },{discriminatorKey: 'type',_id:false});
-const event=mongoose.model('event',eventSchema);
+const event=mongoose.model('eventMatches',eventSchema);
 
 const goalSchema = new Schema({
     scoringPlayer: String,
