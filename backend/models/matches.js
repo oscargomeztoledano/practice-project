@@ -25,7 +25,6 @@ var teamSchema = new Schema({
     lineup: lineupSchema,
     team: teamDetailsSchema
 });
-  
 
 var eventSchema = new Schema({
     minute: Number,

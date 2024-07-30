@@ -1,11 +1,11 @@
-import { get } from 'mongoose';
 import API from './api';
 
 export{
     getAllPlayers,
     getAllTeams,
     getAllMatches,
-    getAllGroups
+    getAllGroups,
+    getLast5Matches
 };
 
 
@@ -21,5 +21,7 @@ function getAllMatches() {
 function getAllGroups() {
     return API.get('/groups').than(response => response.data);
 }
-
+function getLast5Matches() {
+    return API.get('/matches/last5').than(response => response.data);
+}
 //To DO: Implementar el resto de llamadas necesarias al backend

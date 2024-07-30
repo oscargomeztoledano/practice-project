@@ -4,17 +4,18 @@ import Typography from '@mui/material/Typography';
 import { googleLogout } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-import {
-    Navbar,
-    Nav,
-    NavItem,
-    NavLink,
-    NavbarBrand,
-  } from 'reactstrap';
+import Link from '@mui/material/Link';
+import Toolbar from '@mui/material/Toolbar';
+import './HeaderApp.css';
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import config from '../config';
 
-
+const sections = [
+    { title: 'Equipos', url: '/teams' },
+    { title: 'Jugadores', url: '/players' },
+    { title: 'Partidos', url: '/matches' },
+    { title: 'Grupos', url: '/groups' }
+];
 
 export default function HeaderApp() {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function HeaderApp() {
         var name=jwtDecode(res.credential).name;
         sessionStorage.setItem('email', email);
         sessionStorage.setItem('name', name);
-        navigate("/home");
+        navigate("/");
     }
     const onError=()=>{
         console.log("error");
@@ -33,46 +34,57 @@ export default function HeaderApp() {
         sessionStorage.removeItem('email');
         sessionStorage.removeItem('name');
         googleLogout();
-        navigate("/home");
+        navigate("/");
     }
     
     return (
-        <Navbar color="secondary" light={true} dark={true} expand={true} fixed="top" container="fluid">
-            <NavbarBrand href="/home">EURO 2024</NavbarBrand>
-            <Nav className="ml-auto" navbar>
-                <NavItem>
-                    <NavLink href="/home/jugadores">Jugadores</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink href="/home/equipos">Equipos</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink href="/home/partidos">Partidos</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink href="/home/grupos">Grupos</NavLink>
-                </NavItem>
-            </Nav>
-            <Nav className="mr-auto" navbar>
+        <div>
+            <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
                 {sessionStorage.getItem('email') ? (
-                    <NavItem>
-                        <Button variant="outlined" size="small" onClick={onLogout}>
-                            Cerrar sesión
+                        <span>{sessionStorage.getItem('name')}</span>
+                    ) : (
+                        <span>&nbsp;</span> // Espacio vacío cuando no hay sesión iniciada
+                    )}
+                </div>
+                <Typography component="h2" variant='h5' color="inherit" align="center" noWrap>
+                    <Link href='/' color="inherit">
+                        Eurocopa 2024
+                    </Link>
+                </Typography>
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                    {sessionStorage.getItem('email') ? (
+                        <Button color="primary" variant="outlined" onClick={onLogout}>
+                            Logout
                         </Button>
-                        <Typography variant="body1" color="inherit">
-                            {sessionStorage.getItem('name')+" "}
-                        </Typography>
-                        
-                    </NavItem>
-                    
-                ) : (
-                    <NavItem>
+                    ) : (
                         <GoogleOAuthProvider clientId={config.clientID}>
-                            <GoogleLogin onSuccess={onSuccess} onError={onError} />
+                            <GoogleLogin
+                                onSuccess={onSuccess}
+                                onError={onError}
+                            />
                         </GoogleOAuthProvider>
-                    </NavItem>
-                )}
-            </Nav>
-        </Navbar>
+                    )}
+                </div>
+            </Toolbar>
+            <Toolbar
+                component="nav"
+                variant="dense"
+                sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
+            >
+                {sections.map((section) => (
+                    <Link
+                        color="inherit"
+                        noWrap
+                        key={section.title}
+                        variant="body2"
+                        href={section.url}
+                        sx={{ p: 1, flexShrink: 0 }}
+                    >
+                        {section.title}
+                    </Link>
+                ))}
+            </Toolbar>
+        </div>
     );
 }
