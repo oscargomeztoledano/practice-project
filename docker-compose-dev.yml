@@ -60,6 +60,9 @@ services:
     depends_on:
       - consumer
       - mongodb
-
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
 volumes:
   mongo-data:
