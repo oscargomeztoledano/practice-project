@@ -4,25 +4,9 @@ import requests
 from kafka import KafkaProducer
 import json
 from kafka.errors import NoBrokersAvailable
-
-# Definimos cada URL de la API con cada topic de Kafka y los headers para acceder a la API
-URLS_TOPICS = {
-    "https://euro-20242.p.rapidapi.com/players": "players",
-    "https://euro-20242.p.rapidapi.com/teams": "teams",
-    "https://euro-20242.p.rapidapi.com/matches": "matches",
-    "https://euro-20242.p.rapidapi.com/groups": "groups",
-}
-
-headers = {
-    "x-rapidapi-key": "e936e478c0mshcad39bb17581030p190dddjsne0ac165da7cd",
-    "x-rapidapi-host": "euro-20242.p.rapidapi.com"
-}
-
-# Función para obtener los datos de la API
-def get_data(url, headers):
-    response = requests.get(url, headers=headers)
-    print(response.status_code)
-    return response.json()
+from config import URLS_TOPICS, headers
+from collections import collection
+from normalization import get_data, normalize_data, normalize_match, MissingIDError
 
 # Esperar antes de intentar conectar a Kafka
 time.sleep(20)
@@ -37,8 +21,22 @@ while True:
         time.sleep(5)
 
 for url, topic in URLS_TOPICS.items():
-    data = get_data(url, headers)
-    producer.send(topic, value=data)
-    producer.flush()
+    data = get_data(url, headers)   # Obtenemos los datos de la API
+    norm_data=[]
+    for item in data:
+        try:
+            if topic == "matches":
+                norm_item = normalize_match(item) # Normalizamos los datos de los partidos
+            else:
+                required_fields = collection[topic]["required_fields"]
+                default_fields = collection[topic]["default_fields"]
+                norm_item = normalize_data(item, required_fields, default_fields)   # Normalizamos los datos generales
+            norm_data.append(norm_item) # Agregamos los datos normalizados a la lista
+        except ValueError as e:  # Manejamos el error de que falta un campo requerido
+            print(e)
+            continue
+
+producer.send(topic, value=data)
+producer.flush()
 
 print("Data sent to Kafka")
