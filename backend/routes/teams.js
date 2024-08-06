@@ -13,4 +13,14 @@ router.get('/', function(req, res, next) {
         res.status(200).json(teams);
     });
 });
+
+// GET team by ID
+router.get('/:id', function(req, res, next) {
+    Teams.findById(req.params.id, function(err, team) {
+        if (err) {
+            res.status(500).send('Error al obtener el equipo');
+        }
+        res.status(200).json(team);
+    });
+});
 module.exports = router;

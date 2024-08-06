@@ -5,7 +5,7 @@ from kafka import KafkaProducer
 import json
 from kafka.errors import NoBrokersAvailable
 from config import URLS_TOPICS, headers
-from collections import collection
+from data_collections import collection
 from normalization import get_data, normalize_data, normalize_match, MissingIDError
 
 # Esperar antes de intentar conectar a Kafka
@@ -35,8 +35,7 @@ for url, topic in URLS_TOPICS.items():
         except ValueError as e:  # Manejamos el error de que falta un campo requerido
             print(e)
             continue
-
-producer.send(topic, value=data)
-producer.flush()
+    producer.send(topic, value=norm_data)
+    producer.flush()
 
 print("Data sent to Kafka")

@@ -8,7 +8,8 @@ import Footer from './components/Footer';
 import Sidebar from './components/SideBar';
 import Carousel from './components/Carousel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import cardgroup from './components/cardgroup'; // comentado para realizar las pruebas sin el backend
+import Cardgroup from './components/CardGroup'; // comentado para realizar las pruebas sin el backend
+
 const defaultTheme = createTheme();
 export default function Home() {
     return (
@@ -23,7 +24,7 @@ export default function Home() {
                             <Carousel />
                         </Grid>
                         <Grid item xs={12} sm={11}>
-                            {/* <cardgroup/> */} {/* comentado para realizar las pruebas sin el backend */}
+                            {<Cardgroup/> } {/* comentado para realizar las pruebas sin el backend */}
                         </Grid>
                         <Grid item xs={12} sm={1}>
                             <Sidebar />

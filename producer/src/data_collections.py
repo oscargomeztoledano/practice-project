@@ -8,6 +8,7 @@ collection = {
             "position": "",
             "age": 0,
             "dateOfBirth": "",
+            "club": "",
             "goals": 0,
             "assists": 0,
             "appearances": 0,
@@ -38,8 +39,8 @@ collection = {
             "minutesCompleted": 0,
             "description": "",
             "isFinished": False,
-            "teamA":{"score":0,"lineup":{"formation":".-.-.-.","players":[{"player":"","status":""}]},"team":{"_id":""}},
-            "teamB":{"score":0,"lineup":{"formation":".-.-.-.","players":[{"player":"","status":""}]},"team":{"_id":""}},
+            "teamA":{"score":0,"lineup":{"formation":".-.-.-.","players":[{"player":"","status":""}]},"team": {"_id":""}},
+            "teamB":{"score":0,"lineup":{"formation":".-.-.-.","players":[{"player":"","status":""}]},"team": {"_id":""}},
             "matchEvents":[],
             "winningTeam": "",
             "stadium": "",
@@ -50,7 +51,7 @@ collection = {
         "required_fields": ["_id"],
         "default_fields": {
             "name": "",
-            "teams": [{"team": {"_id": "", "points": 0, "matchesPlayed": 0, "wins": 0, "draws": 0, "losses": 0, "goalsScored": 0, "goalsConceded": 0, "goalDifference": 0}}],
+            "teams": [{"team": {"_id": ""}, "points": 0, "matchesPlayed": 0, "wins": 0, "draws": 0, "losses": 0, "goalsScored": 0, "goalsConceded": 0, "goalDifference": 0}],
             "matches": [{"_id": ""}]
         }
     }

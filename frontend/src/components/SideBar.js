@@ -15,7 +15,7 @@ function Sidebar() {
       { name: 'Facebook', icon: FacebookIcon, url:'https://www.facebook.com/' },
     ];
   
-  const paginas = [{name: 'Jugadores', url: '/home/jugadores'}, {name: 'Equipos', url: '/home/equipos'}, {name: 'Partidos', url: '/home/partidos'}, {name: 'Grupos', url: '/home/grupos'}];
+  const paginas = [{name: 'Jugadores', url: '/players'}, {name: 'Equipos', url: '/teams'}, {name: 'Partidos', url: '/matches'}, {name: 'Grupos', url: '/groups'}];
 
   return (
     <Grid item xs={12} md={4}>

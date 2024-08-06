@@ -23,15 +23,15 @@ services:
     ports:
       - "2181:2181"
   kafdrop:
-      image: obsidiandynamics/kafdrop
-      restart: "no"
-      ports:
-        - "9000:9000"
-      environment:
-        KAFKA_BROKERCONNECT: "kafka:9092"
-        JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
-      depends_on:
-        - "kafka"
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+      JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    depends_on:
+      - "kafka"
   mongodb:
     image: mongo
     ports:
@@ -60,9 +60,14 @@ services:
     depends_on:
       - consumer
       - mongodb
+    ports:
+      - "3000:3000"
+
   frontend:
     build: ./frontend
     depends_on:
       - backend
+    ports:
+      - "5000:5000"
 volumes:
   mongo-data:

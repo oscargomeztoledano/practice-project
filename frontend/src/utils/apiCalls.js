@@ -5,6 +5,7 @@ export{
     getAllTeams,
     getAllMatches,
     getAllGroups,
+    getTeambyId,
     getLast5Matches
 };
 
@@ -23,5 +24,8 @@ function getAllGroups() {
 }
 function getLast5Matches() {
     return API.get('/matches/last5').than(response => response.data);
+}
+function getTeambyId(id) {
+    return API.get(`/teams/${id}`).than(response => response.data);
 }
 //To DO: Implementar el resto de llamadas necesarias al backend

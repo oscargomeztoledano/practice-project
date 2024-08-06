@@ -1,9 +1,8 @@
 import requests
-from collections import collection
+from data_collections import collection
 # Función para obtener los datos de la API
 def get_data(url, headers):
     response = requests.get(url, headers=headers)
-    print(response.status_code)
     return response.json()
 
 # Función para obtener el valor por defecto si el key no existe o es None
@@ -12,17 +11,42 @@ def get_with_default(data,key,default_value):
     return value if value else default_value
 
 # Función para normalizar los datos generales
-def normalize_data(data,required_fields,default_fields):
-    norm_data={}
-
+def normalize_data(data, required_fields, default_fields):
+    norm_data = {}
     for key in required_fields:
         if key not in data or not data[key]:
             raise ValueError(f"Key {key} not found in data is required")
-        norm_data[key]=data[key]
-    
+        norm_data[key] = data[key]
+
     for key, default_value in default_fields.items():
-        norm_data[key]= get_with_default(data,key,default_value)
-    
+        if isinstance(default_value, list) and len(default_value) > 0 and isinstance(default_value[0], dict):
+            # Si el valor por defecto es una lista de dicts, normalizamos cada dict en la lista
+            norm_data[key] = []
+            for item in data.get(key, []):
+                norm_item = {}
+                for sub_key, sub_default_value in default_value[0].items():
+                    if isinstance(sub_default_value, dict):
+                        norm_item[sub_key] = {}
+                        for sub_sub_key, sub_sub_default_value in sub_default_value.items():
+                            norm_item[sub_key][sub_sub_key] = get_with_default(item.get(sub_key, {}), sub_sub_key, sub_sub_default_value)
+                    else:
+                        norm_item[sub_key] = get_with_default(item, sub_key, sub_default_value)
+                norm_data[key].append(norm_item)
+        elif isinstance(default_value, dict):
+            # Si el valor por defecto es un dict, normalizamos cada sub-campo del dict
+            norm_data[key] = {}
+            for sub_key, sub_default_value in default_value.items():
+                if key in ["teamA", "teamB"] and sub_key == "team":
+                    # Si estamos en teamA.team o teamB.team, solo tomamos el _id del data
+                    norm_data[key][sub_key] = {"_id": get_with_default(data.get(key, {}).get(sub_key, {}), "_id", sub_default_value["_id"])}
+                else:
+                    if isinstance(sub_default_value, dict) and "_id" in sub_default_value:
+                        # Si el sub-campo es un dict que contiene _id, solo tomamos el _id del data
+                        norm_data[key][sub_key] = get_with_default(data.get(key, {}), "_id", sub_default_value["_id"])
+                    else:
+                        norm_data[key][sub_key] = get_with_default(data.get(key, {}), sub_key, sub_default_value)   
+        else:
+            norm_data[key] = get_with_default(data, key, default_value)
     return norm_data
 
 # Función para normalizar los datos de los eventos de los partidos (item,field,default)
@@ -42,7 +66,7 @@ def normalize_event(event):
     if event_fields["type"]=="substitution":
         event_fields["joiningPlayer"]=get_with_default(event,"joiningPlayer","")
         event_fields["leavingPlayer"]=get_with_default(event,"leavingPlayer","")
-
+    return event_fields
 # Función para normalizar los datos de los partidos, lo hacemos separado por que tenemos que normalizar los eventos
 def normalize_match(match):
     required_fields= collection["matches"]["required_fields"]
