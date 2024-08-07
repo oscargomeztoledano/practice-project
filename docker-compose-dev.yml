@@ -17,11 +17,16 @@ services:
       - "9093:9093"
     depends_on:
       - zookeeper
+    networks:
+      - mi-red
   zookeeper:
     image: wurstmeister/zookeeper
     restart: always
     ports:
       - "2181:2181"
+    networks:
+      - mi-red
+
   kafdrop:
     image: obsidiandynamics/kafdrop
     restart: "no"
@@ -32,6 +37,9 @@ services:
       JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
     depends_on:
       - "kafka"
+    networks:
+      - mi-red
+
   mongodb:
     image: mongo
     ports:
@@ -39,22 +47,31 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: oscar
       MONGO_INITDB_ROOT_PASSWORD: pass
+    networks:
+      - mi-red
     volumes:
       - mongo-data:/data/db
       #mysql-> /var/lib/mysql
       #postgres-> /var/lib/postgressql/data
+
   consumer:
     build: ./consumer
     depends_on:
       - producer
       - kafka
       - mongodb
+    networks:
+      - mi-red
+
   producer:
     build: 
       context: ./producer
       dockerfile: Dockerfile.dev
     depends_on:
       - kafka
+    networks:
+      - mi-red
+
   backend:
     build: ./backend
     depends_on:
@@ -62,12 +79,21 @@ services:
       - mongodb
     ports:
       - "3000:3000"
+    networks:
+      - mi-red
 
   frontend:
     build: ./frontend
     depends_on:
       - backend
     ports:
-      - "5000:5000"
+      - "3001:3000"
+    networks:
+      - mi-red
+
 volumes:
   mongo-data:
+  
+networks:
+  mi-red:
+    driver: bridge

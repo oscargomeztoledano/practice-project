@@ -15,7 +15,13 @@ var debug = require('debug')('backend:server');
 var bodyParser  = require("body-parser");   //nuevo
 var cors = require('cors');   //nuevo
 var mongoose = require('mongoose');
-app.use(cors());  //nuevo
+const corsOptions = {
+  origin: '*', // Permitir solicitudes desde cualquier origen
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+app.use(cors(corsOptions));  //nuevo
 app.use(bodyParser.json({limit: '50mb'}));  //nuevo
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));   //nuevo
 app.use(express.json());

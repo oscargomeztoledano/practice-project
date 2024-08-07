@@ -42,7 +42,6 @@ for name in os.listdir(data_dir):
                 default_fields = collection[topic]["default_fields"]
                 norm_item = normalize_data(item, required_fields, default_fields)   # Normalizamos los datos generales
             norm_data.append(norm_item) # Agregamos los datos normalizados a la lista
-            print(f"Data normalized for {topic}: {norm_item}")
         except ValueError as e:  # Manejamos el error de que falta un campo requerido
             print(e)
             continue

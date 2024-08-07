@@ -16,32 +16,38 @@ export default function CardGroup() {
     //Obtiene los ultimos 5 partidos
     
     // Obtiene todos los nombres de los equipos que viene en matches
-    const getTeams = async (matches) => {
+    const getTeams = (matches) => {
         try {
             const teamPromises = matches.flatMap(match => [
                 getTeambyId(match.teamA.team._id),
                 getTeambyId(match.teamB.team._id)
             ]);
-            const teamsArray = await Promise.all(teamPromises);
-            const teamsMap = {};
-            teamsArray.forEach(team => {
-                teamsMap[team._id] = team.name;
-            });
-            setTeams(teamsMap);
+            Promise.all(teamPromises)
+                .then(teamsArray => {
+                    const teamsMap = {};
+                    teamsArray.forEach(team => {
+                        teamsMap[team._id] = team.name;
+                    });
+                    setTeams(teamsMap);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         } catch (err) {
             console.log(err);
         }
     };
     //cuando se renderiza el componente llama a getMatches
     useEffect(() => {
-        const getMatches = async () => {
-            try {
-                const matches = await getLast5Matches();
-                setMatches(matches);
-                await getTeams(matches);
-            } catch (err) {
-                console.log(err);
-            }
+        const getMatches = () => {
+            getLast5Matches()
+                .then(matches => {
+                    setMatches(matches);
+                    return getTeams(matches);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         };
         getMatches();
     }, []);

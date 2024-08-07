@@ -1,5 +1,5 @@
 import axios from 'axios';
-
-export default axios.create({
-    baseURL: process.env.BASE_URL 
+const api = axios.create({
+    baseURL:  `http://backend:3000`,// URL del backend  
 });
+export default api;
