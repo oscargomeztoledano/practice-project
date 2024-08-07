@@ -12,18 +12,12 @@ var groupsRouter = require('./routes/groups.js');
 var app = express();
 var debug = require('debug')('backend:server');
 
-var bodyParser  = require("body-parser");   //nuevo
-var cors = require('cors');   //nuevo
+var bodyParser  = require("body-parser");   
 var mongoose = require('mongoose');
-const corsOptions = {
-  origin: '*', // Permitir solicitudes desde cualquier origen
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-};
-app.use(cors(corsOptions));  //nuevo
-app.use(bodyParser.json({limit: '50mb'}));  //nuevo
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));   //nuevo
+var cors = require('cors');   
+app.use(cors());  
+app.use(bodyParser.json({limit: '50mb'}));  
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));   
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

@@ -27,7 +27,7 @@ function getAllGroups() {
 }
 
 function getLast5Matches() {
-    return api.get('/matches/last5').then(({ data }) => data);
+    return api.get('/matches/last5').then(({ data }) => data).catch((error) => {console.error(error)});
 }
 
 function getTeambyId(id) {
