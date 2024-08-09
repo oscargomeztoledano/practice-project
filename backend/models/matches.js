@@ -33,7 +33,6 @@ event.discriminator('substitution',substitutionSchema);
 event.discriminator('cart',cartSchema);
 
 var matchSchema = new Schema({
-    _id: {type: Schema.Types.ObjectId},
     number: Number,
     stage: String,
     date: Date,

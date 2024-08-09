@@ -49,12 +49,11 @@ for name in os.listdir(data_dir):
     # producer.send(topic, value=norm_data)
 
     # Verificar si se envia algo
-    metadata = producer.send(topic, value=norm_data).get()
-    if metadata:
-        print(f"Mensaje enviado a Kafka. Offset: {metadata.offset}, Partition: {metadata.partition}")
-    else:
-        print("Error al enviar el mensaje a Kafka")
-    producer.flush()
+    try:
+        producer.send(topic, value=norm_data).get()
+    except Exception as e:
+        print(f"Error sending data to Kafka: {e}")
+  
    
 
 print("Data sent to Kafka")

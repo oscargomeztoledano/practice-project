@@ -14,7 +14,6 @@ var groupTeamSchema = new Schema({
 });
 
 var groupSchema = new Schema({
-    _id:  {type:Schema.Types.ObjectId},
     name: String,
     teams: [groupTeamSchema],
     matches: [{_id: {type:Schema.Types.ObjectId, ref: 'matches'}}]

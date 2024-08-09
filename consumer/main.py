@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import json
 import time
 from kafka.errors import NoBrokersAvailable
-
+from bson import ObjectId
 # Variables de MongoDB
 username = 'oscar'
 password = 'pass'
@@ -33,6 +33,7 @@ while True:
 def process(message):
     for data in message.value:
         if isinstance(data, dict) and '_id' in data:
+            data['_id'] = ObjectId(data['_id'])
             collection = db[message.topic]
             collection.update_one({'_id': data['_id']}, {'$set': data}, upsert=True)
 

@@ -5,54 +5,53 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 
 
 export default function CardGroup() {
     const [matches, setMatches] = useState([]);
-    const [teams, setTeams] = useState({});
+    const [teamNames, setTeamNames] = useState({});
 
-
-    //Obtiene los ultimos 5 partidos
-    
-    // Obtiene todos los nombres de los equipos que viene en matches
-    const getTeams = (matches) => {
+    // Obtiene todos los nombres de los equipos
+    const fetchTeamNames = async () => {
         try {
-            const teamPromises = matches.flatMap(match => [
-                getTeambyId(match.teamA.team._id),
-                getTeambyId(match.teamB.team._id)
-            ]);
-            Promise.all(teamPromises)
-                .then(teamsArray => {
-                    const teamsMap = {};
-                    teamsArray.forEach(team => {
-                        teamsMap[team._id] = team.name;
-                    });
-                    setTeams(teamsMap);
+            const matchesData = await getLast5Matches();
+            setMatches(matchesData);
+
+            // Recolecta todos los IDs de equipos únicos
+            const teamIds = new Set();
+            matchesData.forEach(match => {
+                teamIds.add(match.teamA.team._id);
+                teamIds.add(match.teamB.team._id);
+            });
+
+            // Obtén los nombres de los equipos
+            const teamNamesMap = {};
+            await Promise.all(
+                Array.from(teamIds).map(async (teamId) => {
+                    try {
+                        const team = await getTeambyId(teamId);
+                        teamNamesMap[teamId] = team.name;
+                    } catch (err) {
+                        console.log("Error al obtener el equipo", err);
+                        teamNamesMap[teamId] = "Desconocido";
+                    }
                 })
-                .catch(err => {
-                    console.log(err);
-                });
+            );
+
+            setTeamNames(teamNamesMap);
         } catch (err) {
             console.log(err);
         }
     };
-    //cuando se renderiza el componente llama a getMatches
+
     useEffect(() => {
-        const getMatches = () => {
-            getLast5Matches()
-                .then(matches => {
-                    setMatches(matches);
-                    console.log(matches);
-                    return getTeams(matches);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        };
-        getMatches();
+        fetchTeamNames();
     }, []);
 
+    const getTeamName = (teamId) => {
+        return teamNames[teamId] || "Cargando...";
+    };
+    
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Typography variant="h5" component="h2">
@@ -60,26 +59,20 @@ export default function CardGroup() {
             </Typography>
             {matches.map((match) => (
                 <CardActionArea key={match._id} component="a" href={`/matches/${match._id}`}>
-                    <Card sx = {{ display: 'flex' }}>
-                        <CardContent sx = {{ flex: 1 }}>
+                    <Card sx={{ display: 'flex' }}>
+                        <CardContent sx={{ flex: 1 }}>
                             <Typography component="h2" variant="h5">
-                                {teams[(match.teamA.team._id)]} {match.teamA.score} vs {match.teamB.score} {teams[match.teamB.team._id]} 
+                                {getTeamName(match.teamA.team._id)} {match.teamA.score} vs {match.teamB.score} {getTeamName(match.teamB.team._id)}
                             </Typography>
                             <Typography variant="subtitle1" color="text.secondary">
-                                Date: {match.date}
+                                Date: {match.date}<br/>
+                                city: {match.city}<br/>
+                                Stadium: {match.stadium}<br/>
+                                Stage: {match.stage}<br/>
+                                WinningTeam: {match.winningTeam}<br/>
                             </Typography>
-                            <Typography variant="subtitle1" color="text.secondary">
-                                Stage: {match.stage}
-                            </Typography>
-                            <Typography variant="subtitle1" color="text.secondary">
-                                Description:{match.description}
-                            </Typography>
-                            <Typography variant="subtitle1" color="text.primary">
-                                WinningTeam: {match.winningTeam}
-                            </Typography>
+                            
                         </CardContent>
-                        <CardMedia
-                        />
                     </Card>
                 </CardActionArea>
             ))}
