@@ -43,6 +43,7 @@ export default function CardGroup() {
             getLast5Matches()
                 .then(matches => {
                     setMatches(matches);
+                    console.log(matches);
                     return getTeams(matches);
                 })
                 .catch(err => {

@@ -15,7 +15,7 @@ var debug = require('debug')('backend:server');
 var bodyParser  = require("body-parser");   
 var mongoose = require('mongoose');
 var cors = require('cors');   
-app.use(cors());  
+app.use(cors({origin: 'http://localhost:3000', credentials: true}));  
 app.use(bodyParser.json({limit: '50mb'}));  
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));   
 app.use(express.json());
@@ -56,15 +56,21 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  // Passing title explicitly
+  const errorDetails = {
+    title: 'Error',
+    message: err.message,
+    error: res.locals.error
+  };
+
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', errorDetails);
 });
 
 module.exports = app;

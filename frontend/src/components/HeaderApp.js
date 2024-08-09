@@ -8,7 +8,6 @@ import Link from '@mui/material/Link';
 import Toolbar from '@mui/material/Toolbar';
 import './HeaderApp.css';
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import config from '../config';
 
 const sections = [
     { title: 'Equipos', url: '/teams' },
@@ -58,7 +57,7 @@ export default function HeaderApp() {
                             Logout
                         </Button>
                     ) : (
-                        <GoogleOAuthProvider clientId={config.clientID}>
+                        <GoogleOAuthProvider clientId={"1058550104105-b4j0rieb86umhbsf56toilefrb6j4mp8.apps.googleusercontent.com"}>
                             <GoogleLogin
                                 onSuccess={onSuccess}
                                 onError={onError}

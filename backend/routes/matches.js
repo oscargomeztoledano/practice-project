@@ -23,6 +23,7 @@ router.get('/last5', function(req, res, next) {
         .exec()
         .then(function(matches) {
             res.status(200).json(matches);
+            console.log(matches);
             console.log("Enviando ultimos 5 partidos");
         })
         .catch(function(err) {

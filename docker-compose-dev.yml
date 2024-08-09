@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   kafka:
     image: wurstmeister/kafka
@@ -78,7 +79,7 @@ services:
       - consumer
       - mongodb
     ports:
-      - "3000:3000"
+      - "5000:5000"
     networks:
       - mi-red
 
@@ -87,7 +88,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "3001:3000"
+      - "3000:3000"
     networks:
       - mi-red
 
