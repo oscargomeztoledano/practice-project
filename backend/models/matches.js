@@ -35,7 +35,7 @@ event.discriminator('cart',cartSchema);
 var matchSchema = new Schema({
     number: Number,
     stage: String,
-    date: Date,
+    date: String,
     minutesCompleted: Number,
     description: String,
     isFinished: Boolean,

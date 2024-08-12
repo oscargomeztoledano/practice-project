@@ -1,5 +1,7 @@
 import requests
 from data_collections import collection
+from datetime import datetime
+
 # Función para obtener los datos de la API
 def get_data(url, headers):
     response = requests.get(url, headers=headers)
@@ -47,6 +49,8 @@ def normalize_data(data, required_fields, default_fields):
                         norm_data[key][sub_key] = get_with_default(data.get(key, {}), sub_key, sub_default_value)   
         else:
             norm_data[key] = get_with_default(data, key, default_value)
+        
+        
     return norm_data
 
 # Función para normalizar los datos de los eventos de los partidos (item,field,default)
@@ -69,10 +73,18 @@ def normalize_event(event):
     return event_fields
 # Función para normalizar los datos de los partidos, lo hacemos separado por que tenemos que normalizar los eventos
 def normalize_match(match):
-    required_fields= collection["matches"]["required_fields"]
-    default_fields= collection["matches"]["default_fields"]
-    norm_data=normalize_data(match,required_fields,default_fields)
-    norm_data["matchEvents"]=[normalize_event(event) for event in match.get("matchEvents",[])]
+    required_fields = collection["matches"]["required_fields"]
+    default_fields = collection["matches"]["default_fields"]
+    norm_data = normalize_data(match, required_fields, default_fields)
+    
+    # Normalizar la fecha para que solo guarde la parte YYYY-MM-DD
+    if "date" in norm_data:
+        try:
+            norm_data["date"] = datetime.strptime(norm_data["date"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
+        except ValueError:
+            norm_data["date"] = norm_data["date"].split("T")[0]  # En caso de error, solo se queda con la parte de la fecha.
+    
+    norm_data["matchEvents"] = [normalize_event(event) for event in match.get("matchEvents", [])]
     return norm_data
 
 # Excepción personalizada para manejar casos donde falta el ID

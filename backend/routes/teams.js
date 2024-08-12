@@ -28,7 +28,7 @@ router.get('/:id', function(req, res) {
             return res.status(404).send('Equipo no encontrado');
         }
         res.status(200).json(team);
-        console.log('GET team by ID: ' + team);
+
     });
 });
 module.exports = router;

@@ -16,14 +16,14 @@ router.get('/', function(req, res, next) {
 });
 
 //GET last 5 matches by date
-router.get('/last5', function(req, res, next) {
+router.get('/last12', function(req, res, next) {
     Matches.find({ isFinished: true })
         .sort({ date: -1 })
-        .limit(5)
+        .limit(12)
         .exec()
         .then(function(matches) {
             res.status(200).json(matches);
-            console.log("Enviando ultimos 5 partidos");
+            console.log("Enviando ultimos 12 partidos");
         })
         .catch(function(err) {
             res.status(500).send('Error al obtener los últimos 5 partidos');
