@@ -171,8 +171,8 @@ const TableTeams = () => {
             <tbody>
                 {sortedTeams.map(team => {
                     return (
-                        <tr key={team.id}>
-                            <td><a href={`/teams/${team.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>{team.name}</a></td>
+                        <tr key={team._id}>
+                            <td><a href={`/teams/${team._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{team.name}</a></td>
                             <td>{team.coach}</td>
                             <td><a href={`/players/${team.captain}`} style={{ textDecoration: 'none', color: 'inherit' }}>{team.captain}</a></td>
                             <td style={{ textAlign: 'center' }}>{team.championships}</td>
