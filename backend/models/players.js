@@ -6,7 +6,7 @@ var playerSchema = new Schema({
     team: {_id: {type: Schema.Types.ObjectId, ref: 'teams'}},
     position: String,
     age: Number,
-    dateOfBirth: Date,
+    dateOfBirth: String,
     club: String,
     goals: Number,
     assists: Number,

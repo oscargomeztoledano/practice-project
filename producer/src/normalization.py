@@ -49,6 +49,12 @@ def normalize_data(data, required_fields, default_fields):
                         norm_data[key][sub_key] = get_with_default(data.get(key, {}), sub_key, sub_default_value)   
         else:
             norm_data[key] = get_with_default(data, key, default_value)
+        # Normalizar la fecha de nacimiento para que solo guarde la parte YYYY-MM-DD
+        if "dateOfBirth" in norm_data:
+            try:
+                norm_data["dateOfBirth"] = datetime.strptime(norm_data["dateOfBirth"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
+            except ValueError:
+                norm_data["dateOfBirth"] = norm_data["dateOfBirth"].split("T")[0]  # En caso de error, solo se queda con la parte de la fecha.
         
         
     return norm_data
@@ -76,14 +82,13 @@ def normalize_match(match):
     required_fields = collection["matches"]["required_fields"]
     default_fields = collection["matches"]["default_fields"]
     norm_data = normalize_data(match, required_fields, default_fields)
-    
+
     # Normalizar la fecha para que solo guarde la parte YYYY-MM-DD
     if "date" in norm_data:
         try:
             norm_data["date"] = datetime.strptime(norm_data["date"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
         except ValueError:
             norm_data["date"] = norm_data["date"].split("T")[0]  # En caso de error, solo se queda con la parte de la fecha.
-    
     norm_data["matchEvents"] = [normalize_event(event) for event in match.get("matchEvents", [])]
     return norm_data
 
