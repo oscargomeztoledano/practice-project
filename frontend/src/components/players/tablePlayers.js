@@ -97,7 +97,8 @@ const TablePlayers = () => {
                     player.name.toLowerCase().includes(searchText) ||
                     player.teamName.toLowerCase().includes(searchText) ||
                     player.position.toLowerCase().includes(searchText) ||
-                    player.club.toLowerCase().includes(searchText)
+                    player.club.toLowerCase().includes(searchText) ||
+                    player.age.toString().includes(searchText) 
                 );
             });
         }

@@ -6,7 +6,7 @@ mongoose.set('strict', false); // This is to avoid the "strict mode" error
 
 // GET all groups
 router.get('/', function(req, res, next) {
-    Groups.find({}, function(err, groups) {
+    groups.find({}, function(err, groups) {
         if (err) {
             res.status(500).send('Error al obtener los grupos');
         }
