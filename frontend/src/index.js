@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css';
+import './pwa';
 import App from './App';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';

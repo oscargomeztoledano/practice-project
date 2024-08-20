@@ -14,7 +14,6 @@ const TableMatches = ({ matches }) => {
                 // Mapea cada equipo para obtener su nombre usando su ID
                 const matchesWithNames = await Promise.all(
                     matches.map(async (match) => {
-                        console.log('Fetching team names for match:', match); // Verifica los datos de cada partido
                         const teamData = await getTeambyId(match.teamA.team._id); // Llama a la API para obtener el nombre del equipo
                         const teamData2 = await getTeambyId(match.teamB.team._id); // Llama a la API para obtener el nombre del equipo
                         return {

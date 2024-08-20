@@ -35,7 +35,11 @@ for url, topic in URLS_TOPICS.items():
         except ValueError as e:  # Manejamos el error de que falta un campo requerido
             print(e)
             continue
-    producer.send(topic, value=norm_data)
+    try:
+        producer.send(topic, value=norm_data).get()
+    except Exception as e:
+        print(f"Error sending data to Kafka: {e}")
+        
     producer.flush()
 
 print("Data sent to Kafka")
