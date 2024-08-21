@@ -3,5 +3,4 @@ backend/package-lock.json
 frontend/node_modules
 frontend/package-lock.json
 /producer/data
-frontend/src/blog
 cds4u
