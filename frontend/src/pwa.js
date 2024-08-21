@@ -2,7 +2,7 @@
 if ('serviceWorker' in navigator) {
     console.log('Registering Service Worker');
     navigator.serviceWorker
-        .register('/sw.js')  // Cambié la ruta a '/sw.js' ya que el Service Worker debería estar en 'public'
+        .register('../public/sw.js')  
         .then(function (registration) {
             console.log('Service Worker Registered', registration.scope);
         })
