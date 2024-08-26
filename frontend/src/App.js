@@ -7,6 +7,7 @@ import HomePlayers from "./components/players/home";
 import PlayerByID from "./components/players/playerByid";
 import HomeGroups from "./components/groups/home";
 import HomeMatches from "./components/matches/home";
+import MatchByID from "./components/matches/matchByid";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/players/:id" element={<PlayerByID />} />
         <Route path="/groups" element={<HomeGroups/>} />
         <Route path="/matches" element={<HomeMatches/>} />
+        <Route path="/matches/:id" element={<MatchByID />} />
       </Routes>
     </Router>
   );

@@ -11,7 +11,7 @@ var eventSchema = new Schema({
     minute: Number,
     type: String,
     team: String,
-    datails: String
+    details: String
 },{discriminatorKey: 'type',_id:false});
 const event=mongoose.model('eventMatches',eventSchema);
 
@@ -23,14 +23,14 @@ const substitutionSchema = new Schema({
     joiningPlayer: String,
     leavingPlayer: String,
 });
-const cartSchema = new Schema({
+const cardSchema = new Schema({
     cardColor: String,
     bookedPlayer: String,
 });
 
 event.discriminator('goal',goalSchema);
 event.discriminator('substitution',substitutionSchema);
-event.discriminator('cart',cartSchema);
+event.discriminator('card',cardSchema);
 
 var matchSchema = new Schema({
     number: Number,
