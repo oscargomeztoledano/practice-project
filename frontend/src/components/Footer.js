@@ -34,7 +34,7 @@ function Copyright() {
       <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6 }}>
         <Container maxWidth="lg">
           <Typography variant="h6" align="center" gutterBottom>
-            {'Prácticas HPECDS'}
+            {'HPECDS Practices'}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -42,7 +42,7 @@ function Copyright() {
             color="text.secondary"
             component="p"
           >
-            {'Trabajo realizado por Óscar Gómez.'}
+            {'Work done by Oscar Gomez.'}
           </Typography>
           <Stack
             direction="row"

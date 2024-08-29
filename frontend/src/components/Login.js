@@ -23,7 +23,7 @@ export default class Login extends Component {
         return (
             <div>
                 <Button color="primary" variant="outlined" onClick={this.login}>
-                    Iniciar sesión
+                    Log in
                 </Button>
             </div>
         );

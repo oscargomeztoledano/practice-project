@@ -5,9 +5,9 @@ const InfoEquipo = ({ team, match, lineup }) => {
     return (
         <Paper elevation={3} style={{ padding: '20px' }}>
             <Typography variant="h6">{team.name}</Typography>
-            <Typography variant="body1">Entrenador: {team.coach}</Typography>
-            <Typography variant="body1">Capitán: {team.captain}</Typography>
-            <Typography variant="body1">Formación: {lineup?.formation || "N/A"}</Typography>
+            <Typography variant="body1">Coach: {team.coach}</Typography>
+            <Typography variant="body1">Captain: {team.captain}</Typography>
+            <Typography variant="body1">lineup: {lineup?.formation || "N/A"}</Typography>
 
             <Typography variant="h6" style={{ marginTop: '10px' }}>Jugadores:</Typography>
             {lineup?.players?.map((player, index) => (
@@ -18,7 +18,7 @@ const InfoEquipo = ({ team, match, lineup }) => {
 
             <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
 
-            <Typography variant="h6">Eventos</Typography>
+            <Typography variant="h6">Events</Typography>
             {match?.matchEvents
                 ?.filter(event => event.team === team.name)
                 .map((event, index) => (
@@ -28,17 +28,17 @@ const InfoEquipo = ({ team, match, lineup }) => {
                         </Typography>
                         {event.type === 'goal' && (
                             <Typography variant="body2" gutterBottom>
-                                Goleador: {event.scoringPlayer} - Asistente: {event.assistingPlayer}
+                                Score: {event.scoringPlayer} - Assis: {event.assistingPlayer}
                             </Typography>
                         )}
                         {event.type === 'substitution' && (
                             <Typography variant="body2" gutterBottom>
-                                Entra: {event.joiningPlayer} - Sale: {event.leavingPlayer}
+                                Join: {event.joiningPlayer} - Leave: {event.leavingPlayer}
                             </Typography>
                         )}
                         {event.type === 'card' && (
                             <Typography variant="body2" gutterBottom>
-                                Tarjeta: {event.cardColor} - Jugador: {event.bookedPlayer}
+                                Card: {event.cardColor} - Player: {event.bookedPlayer}
                             </Typography>
                         )}
                     </div>

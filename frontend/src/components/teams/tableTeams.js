@@ -177,7 +177,7 @@ const TableTeams = () => {
                             <td>{team.captain}</td>
                             <td style={{ textAlign: 'center' }}>{team.championships}</td>
                             <td style={{ textAlign: 'center' }}>{team.runnersUp}</td>
-                            <td style={{ textAlign: 'center' }}><a href={`/groups/${team.group._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{getGroupName(team.group._id)}</a></td>
+                            <td style={{ textAlign: 'center' }}><a href={`/groups`} style={{ textDecoration: 'none', color: 'inherit' }}>{getGroupName(team.group._id)}</a></td>
                         </tr>
                     );
                 })}

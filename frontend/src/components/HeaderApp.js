@@ -7,10 +7,10 @@ import Login from './Login';
 import Logout from './Logout';
 
 const sections = [
-    { title: 'Equipos', url: '/teams' },
-    { title: 'Jugadores', url: '/players' },
-    { title: 'Partidos', url: '/matches' },
-    { title: 'Grupos', url: '/groups' }
+    { title: 'Teams', url: '/teams' },
+    { title: 'Players', url: '/players' },
+    { title: 'Matches', url: '/matches' },
+    { title: 'Groups', url: '/groups' }
 ];
 
 export default function HeaderApp() {
@@ -27,7 +27,7 @@ export default function HeaderApp() {
                 </div>
                 <Typography component="h2" variant='h5' color="inherit" align="center" noWrap>
                     <Link href='/' color="inherit">
-                        Eurocopa 2024
+                        Euro 2024
                     </Link>
                 </Typography>
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>

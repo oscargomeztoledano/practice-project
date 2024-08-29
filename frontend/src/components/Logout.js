@@ -22,7 +22,7 @@ export default class Logout extends Component {
         return (
             <div>
                 <Button color="primary" variant="outlined" onClick={this.logout}>
-                    Cerrar sesión
+                    Log out
                 </Button>
             </div>
         );
